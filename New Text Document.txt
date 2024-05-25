@@ -1,0 +1,36 @@
+CREATE DATABASE Chris
+
+CREATE TABLE EMPLOYEE ( 
+    Fname VARCHAR(15) NOT NULL, 
+    Mname CHAR, 
+    Lname VARCHAR(15) NOT NULL, 
+    Ssn CHAR(9) NOT NULL, 
+    Bdate DATE,
+    DATEDIFF(YY,[BirthDate],GETDATE()+(CASE WHEN DATEPART()MONTH, GETDATE()-DATEPART(MONTH, [BirthDate]<0 THEN -1 ELSE 0 END)AS Age) 
+    Address  VARCHAR(50),
+    Sex  CHAR,
+    Salary DECIMAL(10,2),
+    Super_ssn INT,
+    Dno INT NOT NULL,
+    PRIMARY KEY (Ssn)
+    FOREIGN KEY(Super_ssn) REFERENCES employee(Ssn) ON DELETE SET NULL
+);
+
+ALTER TABLE employee
+ADD FOREIGN KEY(Dno)
+REFERENCES department(Dnumber) ON DELETE SET NULL;
+
+INSERT INTO employee VALUES 
+  ('James','E','Borg','888665555','10-NOV-27','450 Stone, Houston, TX','M',55000,null,null);
+INSERT INTO employee VALUES 
+  ('Franklin','T','Wong','333445555','08-DEC-45','638 Voss, Houston, TX','M',40000,'888665555',null);
+INSERT INTO employee VALUES 
+  ('Jennifer','S','Wallace','987654321','20-JUN-31','291 Berry, Bellaire, TX','F',43000,'888665555',null);
+INSERT INTO employee VALUES
+  ('Jared','D','James','111111100','10-OCT-1966','123 Peachtree, Atlanta, GA','M',85000,null,null);
+INSERT INTO employee VALUES
+  ('Alex','D','Freed','444444400','09-OCT-1950','4333 Pillsbury, Milwaukee, WI','M',89000,null,null);
+INSERT INTO employee VALUES
+  ('John','C','James','555555500','30-JUN-1975','7676 Bloomington, Sacramento, CA','M',81000,null,null);
+--
+Select * from EMPLOYEE

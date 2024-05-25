@@ -1,0 +1,204 @@
+CREATE DATABASE dennisSimplifies_801;
+
+USE dennisSimplifies_801;
+
+
+
+--Creating Table Employee
+CREATE TABLE employee(
+Fname VARCHAR(15),
+Minit CHAR,
+Lname VARCHAR(15),
+Ssn INT PRIMARY KEY,
+Bdate DATE,
+Address VARCHAR(50),
+Sex CHAR,
+Salary DECIMAL(10,2),
+Super_ssn INT,
+Dno INT,
+FOREIGN KEY(Super_ssn) REFERENCES employee(Ssn) ON DELETE SET NULL
+);
+
+
+ALTER TABLE employee
+ADD FOREIGN KEY(Dno)
+REFERENCES department(Dnumber) ON DELETE SET NULL;
+
+INSERT INTO employee VALUES 
+  ('James','E','Borg','888665555','10-NOV-27','450 Stone, Houston, TX','M',55000,null,null);
+INSERT INTO employee VALUES 
+  ('Franklin','T','Wong','333445555','08-DEC-45','638 Voss, Houston, TX','M',40000,'888665555',null);
+INSERT INTO employee VALUES 
+  ('Jennifer','S','Wallace','987654321','20-JUN-31','291 Berry, Bellaire, TX','F',43000,'888665555',null);
+INSERT INTO employee VALUES
+  ('Jared','D','James','111111100','10-OCT-1966','123 Peachtree, Atlanta, GA','M',85000,null,null);
+INSERT INTO employee VALUES
+  ('Alex','D','Freed','444444400','09-OCT-1950','4333 Pillsbury, Milwaukee, WI','M',89000,null,null);
+INSERT INTO employee VALUES
+  ('John','C','James','555555500','30-JUN-1975','7676 Bloomington, Sacramento, CA','M',81000,null,null);
+--
+
+SELECT * FROM employee;
+
+--CREATING TABLE DEPARTMENT
+USE dennisSimplifies_801;
+
+CREATE TABLE department(
+Dname VARCHAR(20),
+Dnumber INT PRIMARY KEY,
+Mgr_ssn INT,
+Mgr_start_date DATE,
+FOREIGN KEY(Mgr_ssn) REFERENCES employee(Ssn) ON DELETE SET NULL
+);
+
+INSERT INTO department VALUES ('Research', 5, '333445555', '22-MAY-78');
+INSERT INTO department VALUES ('Administration', 4, '987654321', '01-JAN-85');
+INSERT INTO department VALUES ('Headquarters', 1, '888665555', '19-JUN-71');
+INSERT INTO department VALUES ('Software',6,'111111100','15-MAY-1999');
+INSERT INTO department VALUES ('Hardware',7,'444444400','15-MAY-1998');
+INSERT INTO department VALUES ('Sales',8,'555555500','01-JAN-1997');
+
+SELECT * FROM department;
+
+--CREATING TABLE DEPARTMENT LOCATIONS
+USE dennisSimplifies_801;
+
+CREATE TABLE dept_locations(
+Dnumber INT,
+Dlocation VARCHAR(20),
+PRIMARY KEY(Dnumber, Dlocation),
+FOREIGN KEY(Dnumber) REFERENCES department(Dnumber) ON DELETE CASCADE
+);
+
+INSERT INTO dept_locations VALUES (1,'Houston');
+INSERT INTO dept_locations VALUES (4,'Stafford');
+INSERT INTO dept_locations VALUES (5,'Bellaire');
+INSERT INTO dept_locations VALUES (5,'Sugarland');
+INSERT INTO dept_locations VALUES (5,'Houston');
+INSERT INTO dept_locations VALUES (6,'Atlanta');
+INSERT INTO dept_locations VALUES (6,'Sacramento');
+INSERT INTO dept_locations VALUES (7,'Milwaukee');
+INSERT INTO dept_locations VALUES (8,'Chicago');
+INSERT INTO dept_locations VALUES (8,'Dallas');
+INSERT INTO dept_locations VALUES (8,'Philadephia');
+INSERT INTO dept_locations VALUES (8,'Seattle');
+INSERT INTO dept_locations VALUES (8,'Miami');
+
+SELECT * FROM dept_locations;
+
+--CREATING TABLE PROJECT
+USE dennisSimplifies_801;
+
+CREATE TABLE project(
+Pname VARCHAR(20),
+Pnumber INT PRIMARY KEY,
+Plocation VARCHAR(20),
+Dnum INT,
+FOREIGN KEY(Dnum) REFERENCES department(Dnumber) ON DELETE SET NULL
+);
+
+INSERT INTO project VALUES ('ProductX',1,'Bellaire',5);
+INSERT INTO project VALUES ('ProductY',2,'Sugarland',5);
+INSERT INTO project VALUES ('ProductZ',3,'Houston',5);
+INSERT INTO project VALUES ('Computerization',10,'Stafford',4);
+INSERT INTO project VALUES ('Reorganization',20,'Houston',1);
+INSERT INTO project VALUES ('Newbenefits',30,'Stafford',4);
+INSERT INTO project VALUES ('OperatingSystems',61,'Jacksonville',6);
+INSERT INTO project VALUES ('DatabaseSystems',62,'Birmingham',6);
+INSERT INTO project VALUES ('Middleware',63,'Jackson',6);
+INSERT INTO project VALUES ('InkjetPrinters',91,'Phoenix',7);
+INSERT INTO project VALUES ('LaserPrinters',92,'LasVegas',7);
+
+SELECT * FROM project;
+
+--CREATING TABLE WORKS_ON
+USE dennisSimplifies_801;
+
+CREATE TABLE works_on(
+Essn INT,
+Pno INT,
+Hrs DECIMAL(3,1),
+PRIMARY KEY(Essn, Pno),
+FOREIGN KEY(Essn) REFERENCES employee(Ssn) ON DELETE SET NULL,
+FOREIGN KEY(Pno) REFERENCES project(Pnumber) ON DELETE CASCADE
+);
+
+
+INSERT INTO works_on VALUES ('123456789',1, 32.5);
+INSERT INTO works_on VALUES ('123456789',2,  7.5);
+INSERT INTO works_on VALUES ('666884444',3, 40.0);
+INSERT INTO works_on VALUES ('453453453',1, 20.0);
+INSERT INTO works_on VALUES ('453453453',2, 20.0);
+INSERT INTO works_on VALUES ('333445555',2, 10.0);
+INSERT INTO works_on VALUES ('333445555',3, 10.0);
+INSERT INTO works_on VALUES ('333445555',10,10.0);
+INSERT INTO works_on VALUES ('333445555',20,10.0);
+INSERT INTO works_on VALUES ('999887777',30,30.0);
+INSERT INTO works_on VALUES ('999887777',10,10.0);
+INSERT INTO works_on VALUES ('987987987',10,35.0);
+INSERT INTO works_on VALUES ('987987987',30, 5.0);
+INSERT INTO works_on VALUES ('987654321',30,20.0);
+INSERT INTO works_on VALUES ('987654321',20,15.0);
+INSERT INTO works_on VALUES ('888665555',20,null);
+INSERT INTO works_on VALUES ('111111100',61,40.0);
+INSERT INTO works_on VALUES ('111111101',61,40.0);
+INSERT INTO works_on VALUES ('111111102',61,40.0);
+INSERT INTO works_on VALUES ('111111103',61,40.0);
+INSERT INTO works_on VALUES ('222222200',62,40.0);
+INSERT INTO works_on VALUES ('222222201',62,48.0);
+INSERT INTO works_on VALUES ('222222202',62,40.0);
+INSERT INTO works_on VALUES ('222222203',62,40.0);
+INSERT INTO works_on VALUES ('222222204',62,40.0);
+INSERT INTO works_on VALUES ('222222205',62,40.0);
+INSERT INTO works_on VALUES ('333333300',63,40.0);
+INSERT INTO works_on VALUES ('333333301',63,46.0);
+INSERT INTO works_on VALUES ('444444400',91,40.0);
+INSERT INTO works_on VALUES ('444444401',91,40.0);
+INSERT INTO works_on VALUES ('444444402',91,40.0);
+INSERT INTO works_on VALUES ('444444403',91,40.0);
+INSERT INTO works_on VALUES ('555555500',92,40.0);
+INSERT INTO works_on VALUES ('555555501',92,44.0);
+INSERT INTO works_on VALUES ('666666601',91,40.0);
+INSERT INTO works_on VALUES ('666666603',91,40.0);
+INSERT INTO works_on VALUES ('666666604',91,40.0);
+INSERT INTO works_on VALUES ('666666605',92,40.0);
+INSERT INTO works_on VALUES ('666666606',91,40.0);
+INSERT INTO works_on VALUES ('666666607',61,40.0);
+INSERT INTO works_on VALUES ('666666608',62,40.0);
+INSERT INTO works_on VALUES ('666666609',63,40.0);
+INSERT INTO works_on VALUES ('666666610',61,40.0);
+INSERT INTO works_on VALUES ('666666611',61,40.0);
+INSERT INTO works_on VALUES ('666666612',61,40.0);
+INSERT INTO works_on VALUES ('666666613',61,30.0);
+INSERT INTO works_on VALUES ('666666613',62,10.0);
+INSERT INTO works_on VALUES ('666666613',63,10.0);
+
+SELECT * FROM works_on;
+
+--CREATING FOR DEPENDENT
+USE dennisSimplifies_801;
+
+CREATE TABLE dependents(
+Essn INT,
+Dependent_name VARCHAR(20),
+Sex CHAR,
+Bdate DATE,
+Relationship VARCHAR(20),
+PRIMARY KEY(Essn, Dependent_name),
+FOREIGN KEY(Essn) REFERENCES employee(Ssn) ON DELETE CASCADE
+);
+
+
+INSERT INTO dependents VALUES ('333445555','Alice','F','05-APR-76','Daughter');
+INSERT INTO dependents VALUES ('333445555','Theodore','M','25-OCT-73','Son');
+INSERT INTO dependents VALUES ('333445555','Joy','F','03-MAY-48','Spouse');
+INSERT INTO dependents VALUES ('987654321','Abner','M','29-FEB-32','Spouse');
+INSERT INTO dependents VALUES ('123456789','Michael','M','01-JAN-78','Son');
+INSERT INTO dependents VALUES ('123456789','Alice','F', '31-DEC-78','Daughter');
+INSERT INTO dependents VALUES ('123456789','Elizabeth','F','05-MAY-57','Spouse');
+INSERT INTO dependents VALUES ('444444400','Johnny','M','04-APR-1997','Son');
+INSERT INTO dependents VALUES ('444444400','Tommy','M','07-JUN-1999','Son');
+INSERT INTO dependents VALUES ('444444401','Chris','M','19-APR-1969','Spouse');
+INSERT INTO dependents VALUES ('444444402','Sam','M','14-FEB-1964','Spouse');
+
+SELECT * FROM dependents;
